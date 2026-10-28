@@ -1,0 +1,45 @@
+{
+  "name": "cloud-marketplace-saas",
+  "version": "0.1.0",
+  "description": "Google Cloud Marketplace + AWS Marketplace integration helpers for SaaS sellers: sign-up JWT, Procurement API, Service Control metering, ResolveCustomer / GetEntitlements / BatchMeterUsage under Concurrent Agreements, EventBridge events.",
+  "license": "MIT",
+  "author": "Carnegie Intelligent Technology Limited",
+  "repository": { "type": "git", "url": "https://github.com/sparring-hq/cloud-marketplace-saas" },
+  "homepage": "https://github.com/sparring-hq/cloud-marketplace-saas#readme",
+  "keywords": ["google-cloud-marketplace", "aws-marketplace", "saas", "procurement-api", "service-control", "batchmeterusage", "resolvecustomer", "concurrent-agreements", "marketplace-metering"],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./gcp": { "types": "./dist/gcp/index.d.ts", "import": "./dist/gcp/index.js" },
+    "./aws": { "types": "./dist/aws/index.d.ts", "import": "./dist/aws/index.js" }
+  },
+  "files": ["dist", "README.md", "LICENSE"],
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node --test --import tsx test/*.test.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "peerDependencies": {
+    "@aws-sdk/client-marketplace-entitlement-service": ">=3.700.0",
+    "@aws-sdk/client-marketplace-metering": ">=3.700.0",
+    "googleapis": ">=140.0.0",
+    "jose": ">=5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@aws-sdk/client-marketplace-entitlement-service": { "optional": true },
+    "@aws-sdk/client-marketplace-metering": { "optional": true },
+    "googleapis": { "optional": true }
+  },
+  "devDependencies": {
+    "@aws-sdk/client-marketplace-entitlement-service": "^3.1156.0",
+    "@aws-sdk/client-marketplace-metering": "^3.1156.0",
+    "@types/node": "^22.0.0",
+    "googleapis": "^160.0.0",
+    "jose": "^6.1.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}
