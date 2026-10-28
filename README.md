@@ -1,5 +1,7 @@
 # cloud-marketplace-saas
 
+[![CI](https://github.com/sparring-hq/cloud-marketplace-saas/actions/workflows/ci.yml/badge.svg)](https://github.com/sparring-hq/cloud-marketplace-saas/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![Node ≥20](https://img.shields.io/badge/node-%E2%89%A520-brightgreen)](package.json)
+
 Google Cloud Marketplace **and** AWS Marketplace integration helpers for SaaS sellers, extracted from two listings we actually
 shipped and got reviewed (a conversation-assurance product on Google Cloud Marketplace and an AI gateway on both). Everything
 here is a thing the official docs under-explain and that cost us a review round or a day of debugging.
