@@ -86,8 +86,16 @@ export type ProcurementEntitlement = {
 };
 
 /** Thin Procurement API client over googleapis' auth (ADC). The service is not bundled in googleapis' typings, so we call REST. */
+type GoogleApis = { google: { auth: { GoogleAuth: new (o: { scopes: string[] }) => { getClient(): Promise<{ request(o: { url: string; method: string; data?: unknown }): Promise<unknown> }> } }; servicecontrol: (o: { version: "v1"; auth: unknown }) => { services: { report: (o: { serviceName: string; requestBody: unknown }) => Promise<{ data: unknown }> } } } };
+/** `googleapis` is a peer dependency, loaded lazily so AWS-only users never pay for it. */
+async function loadGoogleApis(): Promise<GoogleApis> {
+  const modName = "googleapis";
+  try { return (await import(/* webpackIgnore: true */ modName)) as unknown as GoogleApis; }
+  catch { throw new Error("cloud-marketplace-saas/gcp needs the peer dependency `googleapis` (npm i googleapis)"); }
+}
+
 export async function procurementClient(providerId: string) {
-  const { google } = await import("googleapis");
+  const { google } = await loadGoogleApis();
   const auth = new google.auth.GoogleAuth({ scopes: ["https://www.googleapis.com/auth/cloud-platform"] });
   const client = await auth.getClient();
   const base = "https://cloudcommerceprocurement.googleapis.com/v1";
@@ -159,9 +167,9 @@ export type ReportResult = { ok: boolean; reportErrors: unknown[]; raw: unknown 
  */
 export async function reportUsage(serviceName: string, ops: UsageOperation[], valueType: "double" | "int64" = "double"): Promise<ReportResult> {
   if (!ops.length) return { ok: true, reportErrors: [], raw: null };
-  const { google } = await import("googleapis");
+  const { google } = await loadGoogleApis();
   const auth = new google.auth.GoogleAuth({ scopes: ["https://www.googleapis.com/auth/servicecontrol"] });
-  const sc = google.servicecontrol({ version: "v1", auth: (await auth.getClient()) as any });
+  const sc = google.servicecontrol({ version: "v1", auth: await auth.getClient() });
   const operations = ops.map((o) => ({
     operationId: o.operationId, operationName: o.operationName, consumerId: o.consumerId,
     startTime: o.startTime.toISOString(), endTime: o.endTime.toISOString(), labels: o.labels,
